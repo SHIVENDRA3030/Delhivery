@@ -1,0 +1,564 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DESIGN TOKENS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Primary Brand */
+  --color-primary: 0 102 255;
+  /* #0066FF */
+  --color-primary-hover: 0 82 204;
+  /* #0052CC */
+  --color-primary-light: 219 234 254;
+  /* #DBEAFE */
+
+  /* Secondary */
+  --color-secondary: 100 116 139;
+  /* #64748B */
+  --color-secondary-hover: 71 85 105;
+  /* #475569 */
+
+  /* Semantic Colors */
+  --color-success: 5 150 105;
+  /* #059669 */
+  --color-success-light: 209 250 229;
+  /* #D1FAE5 */
+  --color-warning: 217 119 6;
+  /* #D97706 */
+  --color-warning-light: 254 243 199;
+  /* #FEF3C7 */
+  --color-danger: 220 38 38;
+  /* #DC2626 */
+  --color-danger-light: 254 226 226;
+  /* #FEE2E2 */
+
+  /* Neutrals */
+  --color-background: 248 250 252;
+  /* #F8FAFC */
+  --color-surface: 255 255 255;
+  /* #FFFFFF */
+  --color-border: 226 232 240;
+  /* #E2E8F0 */
+  --color-text-primary: 15 23 42;
+  /* #0F172A */
+  --color-text-muted: 100 116 139;
+  /* #64748B */
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+  /* Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary: 59 130 246;
+    --color-background: 15 23 42;
+    --color-surface: 30 41 59;
+    --color-border: 51 65 85;
+    --color-text-primary: 248 250 252;
+    --color-text-muted: 148 163 184;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BASE STYLES
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: rgb(var(--color-background));
+  color: rgb(var(--color-text-primary));
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TYPOGRAPHY
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.text-hero {
+  @apply text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-none;
+}
+
+.text-h1 {
+  @apply text-3xl md:text-4xl font-bold tracking-tight;
+}
+
+.text-h2 {
+  @apply text-2xl font-semibold;
+}
+
+.text-h3 {
+  @apply text-xl font-semibold;
+}
+
+.text-h4 {
+  @apply text-base font-semibold;
+}
+
+.text-body {
+  @apply text-base text-slate-600 dark:text-slate-300;
+}
+
+.text-caption {
+  @apply text-sm text-slate-500 dark:text-slate-400;
+}
+
+.text-small {
+  @apply text-xs font-medium;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BUTTONS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.btn {
+  @apply inline-flex items-center justify-center gap-2 font-semibold rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98];
+}
+
+.btn-primary {
+  @apply btn bg-blue-600 text-white px-6 py-3 hover:bg-blue-700 focus:ring-blue-500;
+}
+
+.btn-secondary {
+  @apply btn bg-slate-100 text-slate-700 px-5 py-2.5 border border-slate-200 hover:bg-slate-200 focus:ring-slate-400 dark:bg-slate-700 dark:text-white dark:border-slate-600;
+}
+
+.btn-danger {
+  @apply btn bg-red-600 text-white px-5 py-2.5 hover:bg-red-700 focus:ring-red-500;
+}
+
+.btn-ghost {
+  @apply btn text-slate-600 px-4 py-2 hover:bg-slate-100 focus:ring-slate-300 dark:text-slate-300 dark:hover:bg-slate-800;
+}
+
+.btn-outline {
+  @apply btn bg-transparent border-2 border-blue-600 text-blue-600 px-5 py-2.5 hover:bg-blue-50 focus:ring-blue-500 dark:hover:bg-blue-900/20;
+}
+
+.btn-lg {
+  @apply px-8 py-4 text-lg min-h-[56px];
+}
+
+.btn-sm {
+  @apply px-4 py-2 text-sm;
+}
+
+.btn-icon {
+  @apply p-2.5 rounded-lg;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CARDS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.card {
+  @apply bg-white rounded-xl border border-slate-200 p-6 shadow-sm dark:bg-slate-800 dark:border-slate-700;
+}
+
+.card-elevated {
+  @apply bg-white rounded-2xl shadow-lg border-0 p-8 dark:bg-slate-800;
+}
+
+.card-interactive {
+  @apply card cursor-pointer hover:border-blue-300 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 dark:hover:border-blue-500;
+}
+
+.card-feature {
+  @apply card-interactive text-center p-8;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BADGES
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.badge {
+  @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide;
+}
+
+.badge-pending {
+  @apply badge bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400;
+}
+
+.badge-picked-up {
+  @apply badge bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400;
+}
+
+.badge-in-transit {
+  @apply badge bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-400;
+}
+
+.badge-out-for-delivery {
+  @apply badge bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400;
+}
+
+.badge-delivered {
+  @apply badge bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400;
+}
+
+.badge-cancelled {
+  @apply badge bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400;
+}
+
+.badge-returned {
+  @apply badge bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-slate-300;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   INPUTS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.input {
+  @apply w-full px-4 py-3 rounded-lg border border-slate-300 bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 dark:bg-slate-800 dark:border-slate-600 dark:text-white dark:placeholder-slate-500;
+}
+
+.input-lg {
+  @apply input px-5 py-4 text-lg;
+}
+
+.input-error {
+  @apply input border-red-500 focus:ring-red-500;
+}
+
+.input-label {
+  @apply block text-sm font-medium text-slate-700 mb-2 dark:text-slate-300;
+}
+
+.input-hint {
+  @apply text-sm text-slate-500 mt-1.5 dark:text-slate-400;
+}
+
+.input-error-message {
+  @apply text-sm text-red-600 mt-1.5 dark:text-red-400;
+}
+
+.select {
+  @apply input appearance-none bg-no-repeat cursor-pointer;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.75rem center;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+}
+
+.select-lg {
+  @apply select px-5 py-4 text-lg;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TIMELINE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.timeline {
+  @apply relative pl-8 space-y-8;
+}
+
+.timeline::before {
+  content: '';
+  @apply absolute left-3 top-2 bottom-2 w-0.5 bg-slate-200 dark:bg-slate-700;
+}
+
+.timeline-item {
+  @apply relative;
+}
+
+.timeline-dot {
+  @apply absolute -left-5 w-4 h-4 rounded-full border-2 border-white shadow-sm;
+}
+
+.timeline-dot-completed {
+  @apply timeline-dot bg-emerald-500;
+}
+
+.timeline-dot-current {
+  @apply timeline-dot bg-blue-500 ring-4 ring-blue-100 dark:ring-blue-900/50;
+}
+
+.timeline-dot-pending {
+  @apply timeline-dot bg-slate-300 dark:bg-slate-600;
+}
+
+.timeline-content {
+  @apply bg-white rounded-lg p-4 border border-slate-100 dark:bg-slate-800 dark:border-slate-700;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TABLE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.table-container {
+  @apply overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700;
+}
+
+.table {
+  @apply min-w-full divide-y divide-slate-200 dark:divide-slate-700;
+}
+
+.table-header {
+  @apply bg-slate-50 dark:bg-slate-800/50;
+}
+
+.table-header-cell {
+  @apply px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider dark:text-slate-400;
+}
+
+.table-body {
+  @apply bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700;
+}
+
+.table-row {
+  @apply hover:bg-slate-50 transition-colors dark:hover:bg-slate-700/50;
+}
+
+.table-cell {
+  @apply px-6 py-4 whitespace-nowrap text-sm;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ALERTS & FEEDBACK
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.alert {
+  @apply rounded-lg p-4 flex items-start gap-3;
+}
+
+.alert-success {
+  @apply alert bg-emerald-50 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400;
+}
+
+.alert-warning {
+  @apply alert bg-amber-50 text-amber-800 dark:bg-amber-900/20 dark:text-amber-400;
+}
+
+.alert-error {
+  @apply alert bg-red-50 text-red-800 dark:bg-red-900/20 dark:text-red-400;
+}
+
+.alert-info {
+  @apply alert bg-blue-50 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SKELETON LOADING
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.skeleton {
+  @apply animate-pulse bg-slate-200 rounded dark:bg-slate-700;
+}
+
+.skeleton-text {
+  @apply skeleton h-4 w-full;
+}
+
+.skeleton-title {
+  @apply skeleton h-6 w-3/4;
+}
+
+.skeleton-avatar {
+  @apply skeleton h-10 w-10 rounded-full;
+}
+
+.skeleton-card {
+  @apply skeleton h-32 w-full rounded-xl;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SIDEBAR
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.sidebar {
+  @apply fixed left-0 top-0 h-screen w-64 bg-white border-r border-slate-200 flex flex-col z-40 dark:bg-slate-900 dark:border-slate-700;
+}
+
+.sidebar-header {
+  @apply h-16 flex items-center px-6 border-b border-slate-200 dark:border-slate-700;
+}
+
+.sidebar-nav {
+  @apply flex-1 py-4 overflow-y-auto;
+}
+
+.sidebar-link {
+  @apply flex items-center gap-3 px-6 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white;
+}
+
+.sidebar-link-active {
+  @apply sidebar-link bg-blue-50 text-blue-600 border-r-2 border-blue-600 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-400;
+}
+
+.sidebar-footer {
+  @apply p-4 border-t border-slate-200 dark:border-slate-700;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.4s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.2s ease-out forwards;
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 2s ease-in-out infinite;
+}
+
+/* Stagger children animations */
+.stagger-children>* {
+  opacity: 0;
+  animation: fadeInUp 0.4s ease-out forwards;
+}
+
+.stagger-children>*:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.stagger-children>*:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.stagger-children>*:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.stagger-children>*:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.stagger-children>*:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   UTILITIES
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.gradient-primary {
+  @apply bg-gradient-to-br from-blue-600 to-indigo-700;
+}
+
+.gradient-hero {
+  @apply bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800;
+}
+
+.gradient-text {
+  @apply bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent;
+}
+
+.glass {
+  @apply bg-white/80 backdrop-blur-lg border border-white/20;
+}
+
+.container-tight {
+  @apply max-w-3xl mx-auto px-4;
+}
+
+.container-wide {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* Focus visible for keyboard navigation */
+.focus-ring {
+  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2;
+}
+
+/* Divider */
+.divider {
+  @apply border-t border-slate-200 my-6 dark:border-slate-700;
+}
+
+/* Responsive hide/show */
+@media (max-width: 768px) {
+  .hide-mobile {
+    display: none;
+  }
+}
+
+@media (min-width: 769px) {
+  .show-mobile-only {
+    display: none;
+  }
+}
