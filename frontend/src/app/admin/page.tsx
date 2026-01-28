@@ -92,6 +92,13 @@ export default function AdminDashboard() {
         const { data: { session } } = await supabase.auth.getSession();
         const token = session?.access_token;
 
+        // Check if user is authenticated
+        if (!token) {
+            setForceMessage({ type: 'error', text: 'You must be logged in to update status.' });
+            setForceLoading(false);
+            return;
+        }
+
         try {
             const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
             const res = await fetch(`${apiBase}/api/v1/admin/shipments/${selectedShipment.id}/status`, {
@@ -102,6 +109,13 @@ export default function AdminDashboard() {
                 },
                 body: JSON.stringify({ status: forceStatus })
             });
+
+            // Handle 401 Unauthorized
+            if (res.status === 401) {
+                setForceMessage({ type: 'error', text: 'Session expired. Please log in again.' });
+                setForceLoading(false);
+                return;
+            }
 
             if (!res.ok) {
                 const err = await res.json();

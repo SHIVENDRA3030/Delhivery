@@ -23,11 +23,25 @@ export default function AdminShipmentDetailPage() {
         const { data: { session } } = await supabase.auth.getSession();
         const token = session?.access_token;
 
+        // Check if user is authenticated
+        if (!token) {
+            alert('You must be logged in to view shipment details.');
+            setLoading(false);
+            return;
+        }
+
         try {
             const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
             const res = await fetch(`${apiBase}/api/v1/admin/shipments/${id}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
+
+            // Handle 401 Unauthorized
+            if (res.status === 401) {
+                alert('Session expired. Please log in again.');
+                return;
+            }
+
             if (!res.ok) throw new Error('Failed to fetch');
             const data = await res.json();
             setShipment(data);
@@ -57,6 +71,13 @@ export default function AdminShipmentDetailPage() {
         const { data: { session } } = await supabase.auth.getSession();
         const token = session?.access_token;
 
+        // Check if user is authenticated
+        if (!token) {
+            alert('You must be logged in to force update status.');
+            setUpdating(false);
+            return;
+        }
+
         try {
             const apiBase2 = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
             const res = await fetch(`${apiBase2}/api/v1/admin/shipments/${id}/force-status`, {
@@ -70,6 +91,13 @@ export default function AdminShipmentDetailPage() {
                     reason: forceReason
                 })
             });
+
+            // Handle 401 Unauthorized
+            if (res.status === 401) {
+                alert('Session expired. Please log in again.');
+                setUpdating(false);
+                return;
+            }
 
             if (!res.ok) {
                 const err = await res.json();

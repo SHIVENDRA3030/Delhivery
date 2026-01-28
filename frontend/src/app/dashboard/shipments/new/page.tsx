@@ -35,6 +35,14 @@ export default function NewShipmentPage() {
         const { data: { session } } = await supabase.auth.getSession();
         const token = session?.access_token;
 
+        // Check if user is authenticated
+        if (!token) {
+            alert('You must be logged in to create a shipment.');
+            router.push('/login');
+            setLoading(false);
+            return;
+        }
+
         try {
             const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
             const res = await fetch(`${apiBase}/api/v1/shipments/`, {
@@ -45,6 +53,13 @@ export default function NewShipmentPage() {
                 },
                 body: JSON.stringify(formData)
             });
+
+            // Handle 401 Unauthorized
+            if (res.status === 401) {
+                alert('Session expired. Please log in again.');
+                router.push('/login');
+                return;
+            }
 
             if (!res.ok) {
                 const err = await res.json();

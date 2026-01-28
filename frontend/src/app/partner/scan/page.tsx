@@ -40,6 +40,13 @@ function ScanForm() {
         const { data: { session } } = await supabase.auth.getSession();
         const token = session?.access_token;
 
+        // Check if user is authenticated
+        if (!token) {
+            setMessage({ type: 'error', text: 'You must be logged in to update shipment status.' });
+            setLoading(false);
+            return;
+        }
+
         try {
             const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
             const res = await fetch(`${apiBase}/api/v1/partner/shipments/${shipmentId}/scan`, {
@@ -54,6 +61,13 @@ function ScanForm() {
                     description: description || undefined
                 })
             });
+
+            // Handle 401 Unauthorized
+            if (res.status === 401) {
+                setMessage({ type: 'error', text: 'Session expired. Please log in again.' });
+                setLoading(false);
+                return;
+            }
 
             if (!res.ok) {
                 const err = await res.json();
