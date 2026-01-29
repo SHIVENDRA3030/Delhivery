@@ -20,19 +20,20 @@ export default function AdminShipmentDetailPage() {
 
     const fetchDetail = async () => {
         setLoading(true);
-        const { data: { session } } = await supabase.auth.getSession();
-        const token = session?.access_token;
+        // Force refresh to get fresh JWT token
+        const { data: refreshed, error: refreshError } = await supabase.auth.refreshSession();
 
-        // Check if user is authenticated
-        if (!token) {
-            alert('You must be logged in to view shipment details.');
+        if (refreshError || !refreshed?.session) {
+            alert('Session expired. Please log in again.');
             setLoading(false);
             return;
         }
 
+        const accessToken = refreshed.session.access_token;
+
         try {
             const res = await fetch(`/api/v1/admin/shipments/${id}`, {
-                headers: { 'Authorization': `Bearer ${token}` }
+                headers: { 'Authorization': `Bearer ${accessToken}` }
             });
 
             // Handle 401 Unauthorized
@@ -81,22 +82,23 @@ export default function AdminShipmentDetailPage() {
         }
 
         setUpdating(true);
-        const { data: { session } } = await supabase.auth.getSession();
-        const token = session?.access_token;
+        // Force refresh to get fresh JWT token
+        const { data: refreshed, error: refreshError } = await supabase.auth.refreshSession();
 
-        // Check if user is authenticated
-        if (!token) {
-            alert('You must be logged in to force update status.');
+        if (refreshError || !refreshed?.session) {
+            alert('Session expired. Please log in again.');
             setUpdating(false);
             return;
         }
+
+        const accessToken = refreshed.session.access_token;
 
         try {
             const res = await fetch(`/api/v1/admin/shipments/${id}/force-status`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Authorization': `Bearer ${accessToken}`
                 },
                 body: JSON.stringify({
                     status: forceStatus,

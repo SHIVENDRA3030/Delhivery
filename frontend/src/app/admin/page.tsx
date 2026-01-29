@@ -89,22 +89,23 @@ export default function AdminDashboard() {
         setForceLoading(true);
         setForceMessage(null);
 
-        const { data: { session } } = await supabase.auth.getSession();
-        const token = session?.access_token;
+        // Force refresh to get fresh JWT token
+        const { data: refreshed, error: refreshError } = await supabase.auth.refreshSession();
 
-        // Check if user is authenticated
-        if (!token) {
-            setForceMessage({ type: 'error', text: 'You must be logged in to update status.' });
+        if (refreshError || !refreshed?.session) {
+            setForceMessage({ type: 'error', text: 'Session expired. Please log in again.' });
             setForceLoading(false);
             return;
         }
+
+        const accessToken = refreshed.session.access_token;
 
         try {
             const res = await fetch(`/api/v1/admin/shipments/${selectedShipment.id}/status`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Authorization': `Bearer ${accessToken}`
                 },
                 body: JSON.stringify({ status: forceStatus })
             });

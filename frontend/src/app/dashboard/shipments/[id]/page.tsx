@@ -37,23 +37,24 @@ export default function ShipmentDetailPage() {
 
     const handleSchedulePickup = async () => {
         setPickupLoading(true);
-        const { data: { session } } = await supabase.auth.getSession();
-        const token = session?.access_token;
+        // Force refresh to get fresh JWT token
+        const { data: refreshed, error: refreshError } = await supabase.auth.refreshSession();
 
-        // Check if user is authenticated
-        if (!token) {
-            alert('You must be logged in to schedule pickup.');
+        if (refreshError || !refreshed?.session) {
+            alert('Session expired. Please log in again.');
             router.push('/login');
             setPickupLoading(false);
             return;
         }
+
+        const accessToken = refreshed.session.access_token;
 
         try {
             const res = await fetch(`/api/v1/shipments/${id}/pickup`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Authorization': `Bearer ${accessToken}`
                 },
                 body: JSON.stringify({
                     pickup_date: new Date().toISOString().split('T')[0], // Today for demo

@@ -32,23 +32,28 @@ export default function NewShipmentPage() {
         e.preventDefault();
         setLoading(true);
 
-        const { data: { session } } = await supabase.auth.getSession();
-        const token = session?.access_token;
+        // Force refresh to get fresh JWT token
+        const { data: refreshed, error: refreshError } = await supabase.auth.refreshSession();
 
-        // Check if user is authenticated
-        if (!token) {
-            alert('You must be logged in to create a shipment.');
+        if (refreshError || !refreshed?.session) {
+            alert('Session expired. Please log in again.');
             router.push('/login');
             setLoading(false);
             return;
         }
+
+        const accessToken = refreshed.session.access_token;
+
+        // Debug: Check token expiry (remove in production)
+        console.log('JWT EXP:', JSON.parse(atob(accessToken.split('.')[1])).exp);
+        console.log('NOW:', Math.floor(Date.now() / 1000));
 
         try {
             const res = await fetch('/api/v1/shipments', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Authorization': `Bearer ${accessToken}`
                 },
                 body: JSON.stringify(formData)
             });

@@ -37,22 +37,23 @@ function ScanForm() {
         setLoading(true);
         setMessage(null);
 
-        const { data: { session } } = await supabase.auth.getSession();
-        const token = session?.access_token;
+        // Force refresh to get fresh JWT token
+        const { data: refreshed, error: refreshError } = await supabase.auth.refreshSession();
 
-        // Check if user is authenticated
-        if (!token) {
-            setMessage({ type: 'error', text: 'You must be logged in to update shipment status.' });
+        if (refreshError || !refreshed?.session) {
+            setMessage({ type: 'error', text: 'Session expired. Please log in again.' });
             setLoading(false);
             return;
         }
+
+        const accessToken = refreshed.session.access_token;
 
         try {
             const res = await fetch(`/api/v1/partner/shipments/${shipmentId}/scan`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Authorization': `Bearer ${accessToken}`
                 },
                 body: JSON.stringify({
                     status,
