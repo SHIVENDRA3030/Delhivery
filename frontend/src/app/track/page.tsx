@@ -51,7 +51,7 @@ export default function TrackingPage() {
         setResult(null);
 
         try {
-            const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
+            const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || '';
             const res = await fetch(`${apiBase}/api/v1/track/${trackingId}`);
             if (!res.ok) {
                 if (res.status === 404) throw new Error('Shipment not found. Please check your tracking ID.');
@@ -151,9 +151,9 @@ export default function TrackingPage() {
                                             <Icon className={`w-10 h-10 ${config.color}`} />
                                         </div>
                                         <span className={`badge ${result.status === 'DELIVERED' ? 'badge-delivered' :
-                                                result.status === 'PENDING' ? 'badge-pending' :
-                                                    result.status === 'CANCELLED' ? 'badge-cancelled' :
-                                                        'badge-in-transit'
+                                            result.status === 'PENDING' ? 'badge-pending' :
+                                                result.status === 'CANCELLED' ? 'badge-cancelled' :
+                                                    'badge-in-transit'
                                             } text-sm px-4 py-1.5 mb-4`}>
                                             {result.status.replace(/_/g, ' ')}
                                         </span>
