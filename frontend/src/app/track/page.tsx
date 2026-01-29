@@ -53,10 +53,25 @@ export default function TrackingPage() {
         try {
             const res = await fetch(`/api/v1/track/${trackingId}`);
             if (!res.ok) {
-                if (res.status === 404) throw new Error('Shipment not found. Please check your tracking ID.');
-                throw new Error('Failed to fetch tracking details.');
+                let message = 'Failed to fetch tracking details.';
+                if (res.status === 404) {
+                    message = 'Shipment not found. Please check your tracking ID.';
+                } else {
+                    try {
+                        const err = await res.json();
+                        message = err?.detail || message;
+                    } catch {
+                        // Backend returned empty or non-JSON response
+                    }
+                }
+                throw new Error(message);
             }
-            const data = await res.json();
+            let data;
+            try {
+                data = await res.json();
+            } catch {
+                throw new Error('Invalid response from server');
+            }
             setResult(data);
         } catch (err: any) {
             setError(err.message || 'Something went wrong');

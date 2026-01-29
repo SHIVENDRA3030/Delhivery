@@ -41,8 +41,22 @@ export default function AdminShipmentDetailPage() {
                 return;
             }
 
-            if (!res.ok) throw new Error('Failed to fetch');
-            const data = await res.json();
+            if (!res.ok) {
+                let message = 'Failed to fetch shipment details';
+                try {
+                    const err = await res.json();
+                    message = err?.detail || message;
+                } catch {
+                    // Backend returned empty or non-JSON response
+                }
+                throw new Error(message);
+            }
+            let data;
+            try {
+                data = await res.json();
+            } catch {
+                throw new Error('Invalid response from server');
+            }
             setShipment(data);
         } catch (e) {
             console.error(e);
@@ -98,8 +112,14 @@ export default function AdminShipmentDetailPage() {
             }
 
             if (!res.ok) {
-                const err = await res.json();
-                throw new Error(err.detail || 'Update Failed');
+                let message = 'Update Failed';
+                try {
+                    const err = await res.json();
+                    message = err?.detail || message;
+                } catch {
+                    // Backend returned empty or non-JSON response
+                }
+                throw new Error(message);
             }
 
             alert("Status Force Updated!");

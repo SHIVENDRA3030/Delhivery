@@ -61,11 +61,22 @@ export default function NewShipmentPage() {
             }
 
             if (!res.ok) {
-                const err = await res.json();
-                throw new Error(err.detail || 'Failed to create booking');
+                let message = 'Failed to create booking';
+                try {
+                    const err = await res.json();
+                    message = err?.detail || message;
+                } catch {
+                    // Backend returned empty or non-JSON response
+                }
+                throw new Error(message);
             }
 
-            const data = await res.json();
+            let data;
+            try {
+                data = await res.json();
+            } catch {
+                throw new Error('Invalid response from server');
+            }
             alert(`Booking Successful! Tracking ID: ${data.tracking_id}`);
             router.push('/dashboard');
         } catch (err: any) {

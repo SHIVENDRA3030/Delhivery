@@ -117,8 +117,14 @@ export default function AdminDashboard() {
             }
 
             if (!res.ok) {
-                const err = await res.json();
-                throw new Error(err.detail || 'Failed to update status');
+                let message = 'Failed to update status';
+                try {
+                    const err = await res.json();
+                    message = err?.detail || message;
+                } catch {
+                    // Backend returned empty or non-JSON response
+                }
+                throw new Error(message);
             }
 
             setForceMessage({ type: 'success', text: 'Status updated successfully!' });

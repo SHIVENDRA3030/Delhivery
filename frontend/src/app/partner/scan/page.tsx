@@ -69,8 +69,14 @@ function ScanForm() {
             }
 
             if (!res.ok) {
-                const err = await res.json();
-                throw new Error(err.detail || 'Scan failed');
+                let message = 'Scan failed';
+                try {
+                    const err = await res.json();
+                    message = err?.detail || message;
+                } catch {
+                    // Backend returned empty or non-JSON response
+                }
+                throw new Error(message);
             }
 
             setMessage({ type: 'success', text: 'Status Updated Successfully!' });

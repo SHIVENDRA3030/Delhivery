@@ -69,8 +69,14 @@ export default function ShipmentDetailPage() {
             }
 
             if (!res.ok) {
-                const err = await res.json();
-                throw new Error(err.detail || 'Failed');
+                let message = 'Failed to schedule pickup';
+                try {
+                    const err = await res.json();
+                    message = err?.detail || message;
+                } catch {
+                    // Backend returned empty or non-JSON response
+                }
+                throw new Error(message);
             }
 
             alert("Pickup Scheduled!");
