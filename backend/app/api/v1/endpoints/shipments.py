@@ -40,7 +40,7 @@ def get_shipment_events(
 from app.schemas.shipment import ShipmentCreate, PickupScheduleRequest, ShipmentPublic
 from typing import Dict
 
-@router.post("/", response_model=ShipmentPublic)
+@router.post("", response_model=ShipmentPublic)
 def create_shipment_booking(
     shipment_in: ShipmentCreate,
     current_user: Annotated[dict, Depends(deps.get_current_user)],

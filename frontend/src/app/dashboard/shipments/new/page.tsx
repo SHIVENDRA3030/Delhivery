@@ -44,7 +44,7 @@ export default function NewShipmentPage() {
         }
 
         try {
-            const res = await fetch('/api/v1/shipments/', {
+            const res = await fetch('/api/v1/shipments', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
