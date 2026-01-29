@@ -51,8 +51,7 @@ export default function TrackingPage() {
         setResult(null);
 
         try {
-            const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || '';
-            const res = await fetch(`${apiBase}/api/v1/track/${trackingId}`);
+            const res = await fetch(`/api/v1/track/${trackingId}`);
             if (!res.ok) {
                 if (res.status === 404) throw new Error('Shipment not found. Please check your tracking ID.');
                 throw new Error('Failed to fetch tracking details.');

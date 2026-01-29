@@ -31,8 +31,7 @@ export default function AdminShipmentDetailPage() {
         }
 
         try {
-            const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || '';
-            const res = await fetch(`${apiBase}/api/v1/admin/shipments/${id}`, {
+            const res = await fetch(`/api/v1/admin/shipments/${id}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
 
@@ -79,8 +78,7 @@ export default function AdminShipmentDetailPage() {
         }
 
         try {
-            const apiBase2 = process.env.NEXT_PUBLIC_API_BASE_URL || '';
-            const res = await fetch(`${apiBase2}/api/v1/admin/shipments/${id}/force-status`, {
+            const res = await fetch(`/api/v1/admin/shipments/${id}/force-status`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

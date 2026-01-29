@@ -49,8 +49,7 @@ export default function ShipmentDetailPage() {
         }
 
         try {
-            const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || '';
-            const res = await fetch(`${apiBase}/api/v1/shipments/${id}/pickup`, {
+            const res = await fetch(`/api/v1/shipments/${id}/pickup`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
